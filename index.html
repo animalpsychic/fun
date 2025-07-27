@@ -3,67 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Funnel Spirit Jodoh</title>
+  <title>Funnel Tanya Jawab Spiritual</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    .step { display: none; }
-    .step.active { display: block; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    label, select, input, textarea { display: block; margin: 15px 0; width: 100%; }
+    button { padding: 10px 20px; font-size: 16px; }
   </style>
 </head>
 <body>
 
-  <h2>Temukan Energi Spiritual Cintamu</h2>
+  <h2>Konsultasi Spiritual Pribadi</h2>
 
-  <!-- Step 1 -->
-  <div class="step active" id="step1">
-    <label>Tujuan spiritual kamu:</label><br><br>
-    <select id="tujuan">
-      <option value="">-- Pilih tujuan --</option>
-      <option value="Menarik jodoh">Menarik jodoh</option>
-      <option value="Mengembalikan mantan">Mengembalikan mantan</option>
-      <option value="Meningkatkan aura positif">Meningkatkan aura positif</option>
-    </select>
-    <br><button onclick="nextStep(2)">Lanjut</button>
-  </div>
+  <form id="funnelForm">
+    <div>
+      <label>Pertanyaan 1:</label>
+      <select onchange="setQuestion(1, this)">
+        <option value="">-- Pilih pertanyaan --</option>
+        <option value="Apa tujuan utamamu secara spiritual?">Apa tujuan utamamu secara spiritual?</option>
+        <option value="Apa yang paling sering kamu rasakan akhir-akhir ini?">Apa yang paling sering kamu rasakan akhir-akhir ini?</option>
+        <option value="Apa harapanmu dalam hubungan cinta?">Apa harapanmu dalam hubungan cinta?</option>
+      </select>
+      <input type="text" id="jawaban1" placeholder="Tulis jawaban kamu...">
+    </div>
 
-  <!-- Step 2 -->
-  <div class="step" id="step2">
-    <label>Jodoh seperti apa yang kamu harapkan?</label><br><br>
-    <input type="checkbox" name="karakter" value="Setia"> Setia<br>
-    <input type="checkbox" name="karakter" value="Kaya"> Kaya<br>
-    <input type="checkbox" name="karakter" value="Baik hati"> Baik hati<br>
-    <br><button onclick="nextStep(3)">Lanjut</button>
-  </div>
+    <div>
+      <label>Pertanyaan 2:</label>
+      <select onchange="setQuestion(2, this)">
+        <option value="">-- Pilih pertanyaan --</option>
+        <option value="Apa nama orang yang sering kamu pikirkan?">Apa nama orang yang sering kamu pikirkan?</option>
+        <option value="Apa yang ingin kamu ubah dalam hidupmu?">Apa yang ingin kamu ubah dalam hidupmu?</option>
+        <option value="Apa yang membuatmu merasa terhambat?">Apa yang membuatmu merasa terhambat?</option>
+      </select>
+      <input type="text" id="jawaban2" placeholder="Tulis jawaban kamu...">
+    </div>
 
-  <!-- Step 3 -->
-  <div class="step" id="step3">
-    <label>Nama kamu:</label><br>
-    <input type="text" id="nama"><br><br>
-    <label>Tanggal lahir:</label><br>
-    <input type="date" id="tgl"><br>
-    <br><button onclick="submitFunnel()">Lihat Hasil di WhatsApp</button>
-  </div>
+    <div>
+      <label>Pertanyaan 3:</label>
+      <select onchange="setQuestion(3, this)">
+        <option value="">-- Pilih pertanyaan --</option>
+        <option value="Apa yang kamu takutkan saat ini?">Apa yang kamu takutkan saat ini?</option>
+        <option value="Apa yang kamu cari dari seseorang?">Apa yang kamu cari dari seseorang?</option>
+        <option value="Siapa yang terakhir kali bikin kamu menangis?">Siapa yang terakhir kali bikin kamu menangis?</option>
+      </select>
+      <input type="text" id="jawaban3" placeholder="Tulis jawaban kamu...">
+    </div>
+
+    <div>
+      <label>Pertanyaan 4:</label>
+      <select onchange="setQuestion(4, this)">
+        <option value="">-- Pilih pertanyaan --</option>
+        <option value="Apa arti cinta buatmu?">Apa arti cinta buatmu?</option>
+        <option value="Apa hal mistis yang pernah kamu alami?">Apa hal mistis yang pernah kamu alami?</option>
+        <option value="Pernah mimpi aneh? Ceritakan.">Pernah mimpi aneh? Ceritakan.</option>
+      </select>
+      <input type="text" id="jawaban4" placeholder="Tulis jawaban kamu...">
+    </div>
+
+    <div>
+      <label>Pertanyaan 5:</label>
+      <select onchange="setQuestion(5, this)">
+        <option value="">-- Pilih pertanyaan --</option>
+        <option value="Kapan kamu merasa paling hancur?">Kapan kamu merasa paling hancur?</option>
+        <option value="Apa yang kamu doakan diam-diam setiap malam?">Apa yang kamu doakan diam-diam setiap malam?</option>
+        <option value="Apakah kamu percaya takdir bisa diubah?">Apakah kamu percaya takdir bisa diubah?</option>
+      </select>
+      <input type="text" id="jawaban5" placeholder="Tulis jawaban kamu...">
+    </div>
+
+    <button type="button" onclick="kirimKeWA()">Kirim ke WhatsApp</button>
+  </form>
 
   <script>
-    function nextStep(n) {
-      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-      document.getElementById('step' + n).classList.add('active');
+    const pertanyaan = {};
+
+    function setQuestion(n, el) {
+      pertanyaan["p" + n] = el.value;
     }
 
-    function submitFunnel() {
-      const tujuan = document.getElementById('tujuan').value;
-      const karakter = Array.from(document.querySelectorAll('input[name="karakter"]:checked')).map(cb => cb.value).join(', ');
-      const nama = document.getElementById('nama').value;
-      const tgl = document.getElementById('tgl').value;
+    function kirimKeWA() {
+      let hasil = "";
+      for (let i = 1; i <= 5; i++) {
+        const tanya = pertanyaan["p" + i] || "(Belum dipilih)";
+        const jawab = document.getElementById("jawaban" + i).value || "(Tidak dijawab)";
+        hasil += `Pertanyaan ${i}: ${tanya}\nJawaban: ${jawab}\n\n`;
+      }
 
-      const pesan = `Halo, saya ingin konsultasi spiritual.\nTujuan: ${tujuan}\nKarakter Jodoh: ${karakter}\nNama: ${nama}\nTanggal Lahir: ${tgl}`;
-      const encoded = encodeURIComponent(pesan);
-
-      const nomorWA = "6281234567890"; // Ganti dengan nomor WA kamu
-      const waLink = `https://wa.me/${nomorWA}?text=${encoded}`;
-
-      window.location.href = waLink;
+      const pesan = encodeURIComponent("Halo, saya ingin konsultasi spiritual:\n\n" + hasil);
+      const nomor = "6281234567890"; // Ganti dengan nomor WA kamu
+      const link = `https://wa.me/${nomor}?text=${pesan}`;
+      window.location.href = link;
     }
   </script>
 
